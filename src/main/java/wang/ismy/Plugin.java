@@ -29,6 +29,8 @@ public final class Plugin extends JavaPlugin {
             String message = event.getMessage().contentToString();
             if (message.contains("视频搜索")){
                 event.getSubject().sendMessage(videoSearchService.search(message.replaceAll("视频搜索", "")));
+            }else if (message.contains("机器人")){
+                event.getSubject().sendMessage("回归中...");
             }
         });
     }
