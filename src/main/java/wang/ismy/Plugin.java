@@ -1,5 +1,9 @@
 package wang.ismy;
 
+import it.sauronsoftware.jave.AudioAttributes;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncodingAttributes;
+import it.sauronsoftware.jave.InputFormatException;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
@@ -7,7 +11,9 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.Message;
+import net.mamoe.mirai.message.data.Voice;
 import net.mamoe.mirai.utils.ExternalResource;
+import org.apache.commons.codec.EncoderException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -43,7 +49,31 @@ public final class Plugin extends JavaPlugin {
                 for (byte[] bytes : imgList) {
                     event.getSubject().sendMessage(event.getGroup().uploadImage(ExternalResource.create(bytes)));
                 }
+            }else if (message.contains("鸡你太美")){
+                File source = new File("C:\\Users\\MY\\Desktop\\tts.mp3");//输入
+                File target = new File("D:/target.amr");//输出
+                AudioAttributes audio = new AudioAttributes();
+                audio.setCodec("libamr_nb");//编码器
+
+                audio.setBitRate(12200);//比特率
+                audio.setChannels(1);//声道；1单声道，2立体声
+                audio.setSamplingRate(8000);//采样率（重要！！！）
+
+                EncodingAttributes attrs = new EncodingAttributes();
+                attrs.setFormat("amr");//格式
+                attrs.setAudioAttributes(audio);//音频设置
+                Encoder encoder = new Encoder();
+                try {
+                    encoder.encode(source, target, attrs);
+                } catch (InputFormatException e) {
+                    e.printStackTrace();
+                } catch (it.sauronsoftware.jave.EncoderException e) {
+                    e.printStackTrace();
+                }
+                Voice voice = event.getGroup().uploadVoice(ExternalResource.create(new File("D:/target.amr")));
+                event.getSubject().sendMessage(voice);
             }
+
         });
     }
 }
