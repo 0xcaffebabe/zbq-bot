@@ -1,5 +1,6 @@
 package wang.ismy;
 
+import cn.hutool.http.HtmlUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -33,8 +34,8 @@ public class VideoSearchService {
         HttpPost httpPost = new HttpPost("https://zbq.ismy.wang/user/login");
         httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
         httpPost.setEntity(new StringEntity("{\n" +
-                "    \"username\":\"root\",\n" +
-                "    \"password\": \"\"\n" +
+                "    \"username\":\"test\",\n" +
+                "    \"password\": \"202CB962AC59075B964B07152D234B70\"\n" +
                 "}"));
         HttpResponse response = httpClient.execute(httpPost);
         String json = getResponse(response);
@@ -52,6 +53,7 @@ public class VideoSearchService {
     }
 
     public JsonObject getVideoList(String kw) throws IOException {
+        kw = "转笔 " + kw;
         if (httpClient == null){
             login();
         }
@@ -76,7 +78,7 @@ public class VideoSearchService {
             }
             JsonElement title = jsonElement.getAsJsonObject().get("title");
             JsonElement link = jsonElement.getAsJsonObject().get("link");
-            resp += title + "--" + link + "\n";
+            resp += HtmlUtil.cleanHtmlTag(title.toString()) + "--" + link.getAsString() + "\n";
             counter++;
         }
         return resp;
