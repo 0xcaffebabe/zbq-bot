@@ -38,6 +38,7 @@ public final class Plugin extends JavaPlugin {
             }else if (message.contains("机器人")){
                 event.getSubject().sendMessage("回归中...");
             }else if (message.contains("转笔搜索")){
+                event.getSubject().sendMessage("搜索中，请稍后...");
                 List<byte[]> imgList = spinPenSearchService.searchSpinPen(message.replaceAll("转笔搜索", ""));
                 for (byte[] bytes : imgList) {
                     event.getSubject().sendMessage(event.getGroup().uploadImage(ExternalResource.create(bytes)));
