@@ -18,12 +18,14 @@ import org.apache.commons.codec.EncoderException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
 public final class Plugin extends JavaPlugin {
     public static final Plugin INSTANCE = new Plugin();
     private static final VideoSearchService videoSearchService = new VideoSearchService();
     private static final SpinPenSearchService spinPenSearchService = new SpinPenSearchService();
+    private static final SpinPenTrickVoiceService spinPenTrickVoiceService = new SpinPenTrickVoiceService();
 
     private Plugin() {
         super(new JvmPluginDescriptionBuilder("wang.ismy.plugin", "1.0-SNAPSHOT")
@@ -60,29 +62,20 @@ public final class Plugin extends JavaPlugin {
                     event.getSubject().sendMessage("搜索失败 :" + e.getMessage());
                     e.printStackTrace();
                 }
-            } else if (message.contains("鸡你太美")) {
-                File source = new File("C:\\Users\\MY\\Desktop\\tts.mp3");//输入
-                File target = new File("D:/target.amr");//输出
-                AudioAttributes audio = new AudioAttributes();
-                audio.setCodec("libamr_nb");//编码器
-
-                audio.setBitRate(12200);//比特率
-                audio.setChannels(1);//声道；1单声道，2立体声
-                audio.setSamplingRate(8000);//采样率（重要！！！）
-
-                EncodingAttributes attrs = new EncodingAttributes();
-                attrs.setFormat("amr");//格式
-                attrs.setAudioAttributes(audio);//音频设置
-                Encoder encoder = new Encoder();
+            } else if (message.contains("招式名称")) {
+                event.getSubject().sendMessage("转码中,请稍候...");
                 try {
-                    encoder.encode(source, target, attrs);
-                } catch (InputFormatException e) {
-                    e.printStackTrace();
-                } catch (it.sauronsoftware.jave.EncoderException e) {
+                    byte[] bytes = spinPenTrickVoiceService.speakTrick(message.replaceAll("招式名称", ""));
+                    if (bytes == null) {
+                        event.getSubject().sendMessage("招式名称读音搜索失败");
+                        return;
+                    }
+                    Voice voice = event.getGroup().uploadVoice(ExternalResource.create(bytes));
+                    event.getSubject().sendMessage(voice);
+                }catch (Exception e){
+                    event.getSubject().sendMessage("招式搜索失败 :" + e.getMessage());
                     e.printStackTrace();
                 }
-                Voice voice = event.getGroup().uploadVoice(ExternalResource.create(new File("D:/target.amr")));
-                event.getSubject().sendMessage(voice);
             }
 
         });
