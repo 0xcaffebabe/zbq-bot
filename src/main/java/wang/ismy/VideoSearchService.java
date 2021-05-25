@@ -1,10 +1,12 @@
 package wang.ismy;
 
 import cn.hutool.http.HtmlUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -12,11 +14,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import wang.ismy.dto.VideoItem;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Title: VideoSearchService
@@ -90,5 +96,19 @@ public class VideoSearchService {
         } catch (IOException e) {
             return "";
         }
+    }
+
+    public List<VideoItem> getTop3(String kw) {
+        try {
+            JsonObject videoList = getVideoList(kw);
+            JsonArray dataList = videoList.getAsJsonArray("data");
+            List<VideoItem> videoItemList = new Gson().fromJson(dataList.toString(), new TypeToken<List<VideoItem>>() {}.getType());
+            return videoItemList
+                    .stream().limit(3)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 }

@@ -2,8 +2,10 @@ package wang.ismy;
 
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
+import wang.ismy.dto.VideoItem;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +18,14 @@ class VideoSearchServiceTest {
         System.out.println(videoSearchService.convertTop3ToBotResp(json));
     }
 
+    @Test
+    public void testGetTop3(){
+        VideoSearchService videoSearchService = new VideoSearchService();
+        List<VideoItem> videoList = videoSearchService.getTop3("转笔探讨");
+        System.out.println(videoList);
+    }
+
     public static void main(String[] args) throws IOException {
-        new VideoSearchServiceTest().test();
+        new VideoSearchServiceTest().testGetTop3();
     }
 }
