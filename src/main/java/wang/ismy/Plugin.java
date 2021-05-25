@@ -8,11 +8,13 @@ import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncodingAttributes;
 import it.sauronsoftware.jave.InputFormatException;
 import kotlin.jvm.functions.Function1;
+import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.Listener;
+import net.mamoe.mirai.event.events.BotOnlineEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
@@ -22,6 +24,8 @@ import wang.ismy.dto.VideoItem;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public final class Plugin extends JavaPlugin {
@@ -44,6 +48,15 @@ public final class Plugin extends JavaPlugin {
 
     @Override
     public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
+        GlobalEventChannel.INSTANCE.subscribeAlways(BotOnlineEvent.class, event -> {
+            Bot.getInstances()
+                    .forEach(bot -> {
+                        bot.getGroups()
+                                .forEach(group -> {
+                                    group.sendMessage(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " 转笔机器人/司机终结者 已上线");
+                                });
+                    });
+        });
         Listener listener = GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, event -> {
             String message = event
                     .getMessage()
