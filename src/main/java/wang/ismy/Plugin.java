@@ -67,7 +67,7 @@ public final class Plugin extends JavaPlugin {
             boolean isAtMe = event
                     .getMessage()
                     .stream()
-                    .anyMatch(At.class::isInstance);
+                    .anyMatch(msg -> msg instanceof At && Bot.getInstanceOrNull(((At)msg).getTarget()) != null);
             if (message.contains("视频搜索")) {
                 try {
                     event.getSubject().sendMessage("搜索中...");
