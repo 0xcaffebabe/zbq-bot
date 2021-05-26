@@ -23,12 +23,12 @@ public class SpeakLimitListener extends BaseGroupMessageListener {
         long groupId = event.getGroup().getId();
         long senderId = event.getSender().getId();
         valve.computeIfAbsent(groupId, key -> new ConcurrentHashMap<>());
-        valve.get(groupId).computeIfAbsent(senderId, key -> EvictingQueue.create(7));
+        valve.get(groupId).computeIfAbsent(senderId, key -> EvictingQueue.create(5));
 
         EvictingQueue<Long> queue = valve.get(groupId).get(senderId);
         long now = System.currentTimeMillis();
         queue.offer(now);
-        if (queue.size() > 4 && now - queue.peek() < 5000) {
+        if (queue.size() > 4 && now - queue.peek() < 10000) {
             event.getSubject().sendMessage(new At(senderId).plus("您已超速"));
         }
     }
