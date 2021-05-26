@@ -90,9 +90,15 @@ public final class Plugin extends JavaPlugin {
                 event.getSubject().sendMessage("搜索中，请稍后...");
                 try {
                     List<byte[]> imgList = spinPenSearchService.searchSpinPen(message.replaceAll("转笔搜索", ""));
+                    MessageChainBuilder builder = new MessageChainBuilder();
                     for (byte[] bytes : imgList) {
-                        event.getSubject().sendMessage(event.getGroup().uploadImage(ExternalResource.create(bytes)));
+                        builder.append(event.getGroup().uploadImage(ExternalResource.create(bytes)));
                     }
+                    if (CollectionUtil.isEmpty(imgList)){
+                        event.getSubject().sendMessage("无法搜索到相应转笔图片");
+                        return;
+                    }
+                    event.getSubject().sendMessage(builder.build());
                 } catch (Exception e) {
                     event.getSubject().sendMessage("搜索失败 :" + e.getMessage());
                     e.printStackTrace();
