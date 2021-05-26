@@ -21,10 +21,7 @@ import net.mamoe.mirai.utils.ExternalResource;
 import org.apache.commons.codec.EncoderException;
 import org.jetbrains.annotations.NotNull;
 import wang.ismy.dto.VideoItem;
-import wang.ismy.listener.impl.RobotHelpListener;
-import wang.ismy.listener.impl.SpinPenSearchListener;
-import wang.ismy.listener.impl.TrickVoiceSearchListener;
-import wang.ismy.listener.impl.VideoSearchListener;
+import wang.ismy.listener.impl.*;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -65,5 +62,6 @@ public final class Plugin extends JavaPlugin {
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SpinPenSearchListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new TrickVoiceSearchListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new RobotHelpListener());
+        GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SpeakLimitListener());
     }
 }
