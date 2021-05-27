@@ -16,6 +16,8 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.events.BotOnlineEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.event.events.MessageRecallEvent;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import org.apache.commons.codec.EncoderException;
@@ -27,6 +29,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 public final class Plugin extends JavaPlugin {
@@ -64,5 +67,23 @@ public final class Plugin extends JavaPlugin {
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new RobotHelpListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SpeakLimitListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new NeedMuteListener());
+        GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, event -> {
+            MessageSource source = event.getMessage().stream().filter(MessageSource.class::isInstance)
+                    .findFirst()
+                    .map(MessageSource.class::cast)
+                    .orElse(null);
+            int[] ids = source.getIds();
+            long groupId = event.getGroup().getId();
+            int id = ids[ids.length - 1];
+            MessageService.getInstance().add(groupId + "" + id, source.getOriginalMessage().contentToString());
+        });
+        GlobalEventChannel.INSTANCE.subscribeAlways(MessageRecallEvent.GroupRecall.class, event -> {
+            int[] ids = event.getMessageIds();
+            int id = ids[ids.length - 1];
+            long authorId = event.getAuthorId();
+            long groupId = event.getGroup().getId();
+            event.getGroup().sendMessage(new At(authorId).plus("撤回了一条消息：" + MessageService.getInstance().get(groupId + "" + id)));
+
+        });
     }
 }
