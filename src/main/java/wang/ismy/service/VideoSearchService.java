@@ -1,7 +1,6 @@
-package wang.ismy;
+package wang.ismy.service;
 
 import cn.hutool.http.HtmlUtil;
-import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,9 +16,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import wang.ismy.dto.VideoItem;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

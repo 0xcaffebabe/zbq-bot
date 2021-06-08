@@ -1,6 +1,6 @@
 package wang.ismy;
 
-import static org.junit.jupiter.api.Assertions.*;
+import wang.ismy.service.SpinPenTrickVoiceService;
 
 class SpinPenTrickVoiceServiceTest {
 

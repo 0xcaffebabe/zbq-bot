@@ -7,8 +7,7 @@ import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.PlainText;
 import net.mamoe.mirai.utils.ExternalResource;
-import org.apache.commons.codec.binary.StringUtils;
-import wang.ismy.VideoSearchService;
+import wang.ismy.service.VideoSearchService;
 import wang.ismy.dto.VideoItem;
 import wang.ismy.listener.BaseGroupMessageListener;
 

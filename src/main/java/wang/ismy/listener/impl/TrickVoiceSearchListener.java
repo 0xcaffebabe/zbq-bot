@@ -3,7 +3,7 @@ package wang.ismy.listener.impl;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.Voice;
 import net.mamoe.mirai.utils.ExternalResource;
-import wang.ismy.SpinPenTrickVoiceService;
+import wang.ismy.service.SpinPenTrickVoiceService;
 import wang.ismy.listener.BaseGroupMessageListener;
 
 /**

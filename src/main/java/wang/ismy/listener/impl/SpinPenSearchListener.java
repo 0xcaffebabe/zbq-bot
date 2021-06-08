@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.ExternalResource;
-import wang.ismy.SpinPenSearchService;
+import wang.ismy.service.SpinPenSearchService;
 import wang.ismy.listener.BaseGroupMessageListener;
 
 import java.util.List;

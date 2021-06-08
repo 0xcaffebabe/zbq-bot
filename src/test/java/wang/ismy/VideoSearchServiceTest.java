@@ -3,11 +3,10 @@ package wang.ismy;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 import wang.ismy.dto.VideoItem;
+import wang.ismy.service.VideoSearchService;
 
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class VideoSearchServiceTest {
 
