@@ -3,7 +3,12 @@ package wang.ismy.listener.impl;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageSource;
+import wang.ismy.dto.MessageBO;
 import wang.ismy.listener.BaseGroupMessageListener;
+import wang.ismy.service.MessageQueue;
+
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * @Title: PenSellerMsgListener
@@ -12,26 +17,20 @@ import wang.ismy.listener.BaseGroupMessageListener;
  * @since: 2021年06月08日 9:03
  */
 public class PenSellerMsgListener extends BaseGroupMessageListener {
+
+    private static final Pattern PATTERN =Pattern.compile("包邮|出|低价|材料|清笔");
+
     @Override
     protected void consume(GroupMessageEvent event) {
-        boolean isSeller = false;
-        boolean containsImg = event.getMessage().stream().anyMatch(Image.class::isInstance);
-        if (textMessage.contains("包邮")) {
-            isSeller = true;
-        }
-        if (textMessage.contains("出") && containsImg) {
-            isSeller = true;
-        }
-        if (textMessage.contains("低价") && containsImg) {
-            isSeller = true;
-        }
-        if (textMessage.contains("材料") && containsImg) {
-            isSeller = true;
-        }
-        if (textMessage.contains("清笔") && containsImg) {
-            isSeller = true;
-        }
-        if (isSeller) {
+        boolean currentContainsImg = event.getMessage()
+                .stream()
+                .anyMatch(Image.class::isInstance);
+        long groupId = event.getGroup().getId();
+        long qq = event.getSender().getId();
+        boolean recentContainsImg = MessageQueue.getInstance()
+                .getMessageSequence(groupId, qq)
+                .stream().anyMatch(MessageBO::isImg);
+        if (PATTERN.matcher(textMessage).find() &&(currentContainsImg || recentContainsImg)) {
             MessageSource.recall(event.getMessage());
         }
     }
