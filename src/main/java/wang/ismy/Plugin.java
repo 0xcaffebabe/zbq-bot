@@ -14,10 +14,7 @@ import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.Listener;
-import net.mamoe.mirai.event.events.BotOnlineEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
-import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.event.events.MessageRecallEvent;
+import net.mamoe.mirai.event.events.*;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import org.apache.commons.codec.EncoderException;
@@ -66,5 +63,20 @@ public final class Plugin extends JavaPlugin {
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new TrickVoiceSearchListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new RobotHelpListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new PenSellerMsgListener());
+
+        GlobalEventChannel.INSTANCE.subscribeAlways(MemberJoinEvent.class, event -> {
+            long id = event.getMember().getId();
+            MessageChain msg = new At(id)
+                    .plus("欢迎加入" + event.getGroup().getName())
+                    .plus(", 我是转笔机器人");
+            event.getGroup().sendMessage(msg);
+        });
+
+        GlobalEventChannel.INSTANCE.subscribeAlways(MemberJoinRequestEvent.class, event -> {
+            String msg = event.getMessage();
+            if (msg.contains("新人") || msg.contains("萌新")) {
+                event.reject(false, "请回答一个转笔名词");
+            }
+        });
     }
 }
