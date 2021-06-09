@@ -47,6 +47,7 @@ public final class Plugin extends JavaPlugin {
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new RobotHelpListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new PenSellerMsgListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new AllGroupMessageListener());
+        GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SongOrderMessageListener());
 
         GlobalEventChannel.INSTANCE.subscribeAlways(MemberJoinEvent.class, event -> {
             long id = event.getMember().getId();
