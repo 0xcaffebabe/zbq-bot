@@ -1,5 +1,6 @@
 package wang.ismy.listener.impl;
 
+import com.google.common.util.concurrent.RateLimiter;
 import it.sauronsoftware.jave.EncoderException;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.Voice;
@@ -8,6 +9,7 @@ import wang.ismy.listener.BaseGroupMessageListener;
 import wang.ismy.service.MusicService;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author MY
@@ -15,8 +17,13 @@ import java.io.IOException;
  */
 public class SongOrderMessageListener extends BaseGroupMessageListener {
     private static final MusicService MUSIC_SERVICE = new MusicService();
+    private static RateLimiter rateLimiter = RateLimiter.create(0.05);
     @Override
     protected void consume(GroupMessageEvent event) {
+        if (!rateLimiter.tryAcquire(100, TimeUnit.MILLISECONDS)) {
+            event.getSender().sendMessage("已触发限流 请稍后再试");
+            return;
+        }
         if (textMessage.contains("点歌")) {
             String songName = textMessage.replaceAll("点歌", "");
             event.getSubject().sendMessage("转码中 请稍后");
