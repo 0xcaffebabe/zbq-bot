@@ -20,11 +20,11 @@ public class SongOrderMessageListener extends BaseGroupMessageListener {
     private static RateLimiter rateLimiter = RateLimiter.create(0.05);
     @Override
     protected void consume(GroupMessageEvent event) {
-        if (!rateLimiter.tryAcquire(100, TimeUnit.MILLISECONDS)) {
-            event.getSender().sendMessage("已触发限流 请稍后再试");
-            return;
-        }
         if (textMessage.contains("点歌")) {
+            if (!rateLimiter.tryAcquire(100, TimeUnit.MILLISECONDS)) {
+                event.getSender().sendMessage("已触发限流 请稍后再试");
+                return;
+            }
             String songName = textMessage.replaceAll("点歌", "");
             event.getSubject().sendMessage("转码中 请稍后");
             try {
