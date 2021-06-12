@@ -24,6 +24,7 @@ public abstract class BaseGroupMessageListener implements Consumer<GroupMessageE
                 .stream()
                 .filter(PlainText.class::isInstance)
                 .findFirst().map(Message::contentToString)
+                .map(str -> str.replaceAll("\n", ""))
                 .orElse("");
         isAtMe = event
                 .getMessage()

@@ -103,7 +103,7 @@ public class VideoSearchService {
             return videoItemList
                     .stream().limit(3)
                     .collect(Collectors.toList());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Collections.emptyList();
