@@ -42,7 +42,6 @@ public final class Plugin extends JavaPlugin {
 //                    });
 //        });
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new VideoSearchListener());
-        GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SpinPenSearchListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new TrickVoiceSearchListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new RobotHelpListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new PenSellerMsgListener());
