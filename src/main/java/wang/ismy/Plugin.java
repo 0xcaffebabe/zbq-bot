@@ -8,6 +8,7 @@ import net.mamoe.mirai.event.events.*;
 import net.mamoe.mirai.message.data.*;
 import org.jetbrains.annotations.NotNull;
 import wang.ismy.listener.impl.*;
+import wang.ismy.service.SpinPenKeywordsRewardManager;
 import wang.ismy.service.SpinPenSearchService;
 import wang.ismy.service.SpinPenTrickVoiceService;
 import wang.ismy.service.VideoSearchService;
@@ -47,6 +48,8 @@ public final class Plugin extends JavaPlugin {
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new PenSellerMsgListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new AllGroupMessageListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SongOrderMessageListener());
+
+        new SpinPenKeywordsRewardManager().init(GlobalEventChannel.INSTANCE);
 
         GlobalEventChannel.INSTANCE.subscribeAlways(MemberJoinEvent.class, event -> {
             long id = event.getMember().getId();
