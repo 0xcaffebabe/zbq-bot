@@ -1,5 +1,6 @@
 package wang.ismy;
 
+import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
@@ -12,6 +13,9 @@ import wang.ismy.service.SpinPenKeywordsRewardManager;
 import wang.ismy.service.SpinPenSearchService;
 import wang.ismy.service.SpinPenTrickVoiceService;
 import wang.ismy.service.VideoSearchService;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public final class Plugin extends JavaPlugin {
     public static final Plugin INSTANCE = new Plugin();

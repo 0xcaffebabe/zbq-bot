@@ -32,7 +32,7 @@ public class SongOrderMessageListener extends BaseGroupMessageListener {
                 Voice voice = event.getSubject().uploadVoice(ExternalResource.create(MUSIC_SERVICE.search(songName)));
                 event.getSubject().sendMessage(voice);
                 ImgSendUtils.send("call.gif", event.getSubject());
-            } catch (IOException | EncoderException e) {
+            } catch (Exception e) {
                 event.getSubject().sendMessage("点歌失败：" + e.getMessage());
             }
         }

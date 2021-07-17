@@ -36,13 +36,19 @@ public class VideoSearchListener extends BaseGroupMessageListener {
                 List<VideoItem> videoList = VIDEO_SEARCH_SERVICE.getTop3(kw);
                 MessageChainBuilder builder = new MessageChainBuilder();
                 for (VideoItem video : videoList) {
-                    Image image = event.getSubject().uploadImage(ExternalResource.create(HttpUtil.downloadBytes("http:" + video.getThumbnail())));
-                    builder.append(new PlainText(HtmlUtil.cleanHtmlTag(video.getTitle()) + "\n"))
-                            .append(image)
-                            .append("\n" + video.getLink() + "\n");
+                    try {
+                        Image image = event.getSubject().uploadImage(ExternalResource.create(HttpUtil.downloadBytes("http:" + video.getThumbnail())));
+                        builder.append(new PlainText(HtmlUtil.cleanHtmlTag(video.getTitle()) + "\n"))
+                                .append(image)
+                                .append("\n" + video.getLink() + "\n");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        builder.append(new PlainText(HtmlUtil.cleanHtmlTag(video.getTitle()) + "\n"))
+                                .append("\n" + video.getLink() + "\n");
+                    }
                 }
                 if (videoList.size() == 0) {
-                    event.getSubject().sendMessage("搜不到啊 你会不会转笔啊");
+                    event.getSubject().sendMessage("无法搜索 " + kw);
                 }else{
                     event.getSubject().sendMessage(builder.build());
                 }
