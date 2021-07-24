@@ -11,8 +11,11 @@ import org.jsoup.select.Elements;
 import wang.ismy.dto.DouYinVideoItem;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DouYinVideoSearchService {
 
@@ -29,7 +32,7 @@ public class DouYinVideoSearchService {
     }
 
     public List<DouYinVideoItem> searchVideo() throws IOException {
-        HtmlPage page = webClient.getPage("https://www.douyin.com/search/%E8%BD%AC%E7%AC%94?publish_time=0&sort_type=0&source=normal_search&type=video");
+        HtmlPage page = webClient.getPage("https://www.douyin.com/search/%E8%BD%AC%E7%AC%94?publish_time=0&sort_type=2&source=normal_search&type=video");
         webClient.waitForBackgroundJavaScript(20000);
         String html = page.asXml();
         Document doc = Jsoup.parse(html);
@@ -40,6 +43,11 @@ public class DouYinVideoSearchService {
             String title = videoItem.select("div > a > p > span > span > span > span > span").get(0).text();
             String img = videoItem.select("img").get(0).attr("src");
             String link = videoItem.select("div > a").get(0).attr("href");
+            try {
+                link = link.replaceAll("\\?" + new URI(link).getRawQuery(), "");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             DouYinVideoItem douYinVideoItem = new DouYinVideoItem();
             douYinVideoItem.setTitle(title);
             douYinVideoItem.setImg(img);

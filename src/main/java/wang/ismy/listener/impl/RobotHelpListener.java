@@ -25,6 +25,7 @@ public class RobotHelpListener extends BaseGroupMessageListener {
             event.getSubject().sendMessage("转笔机器人功能：\n" +
                     "视频搜索：发送视频搜索加关键词搜索转笔视频。\n" +
                     "点歌：发送点歌加关键词点歌。\n" +
+                    "刷抖音：发送刷抖音刷抖音。\n" +
                     "招式名称：发送招式名称加术语搜索术语读音。");
         }
     }
