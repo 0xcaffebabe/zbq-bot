@@ -52,6 +52,7 @@ public final class Plugin extends JavaPlugin {
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new PenSellerMsgListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new AllGroupMessageListener());
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new SongOrderMessageListener());
+        GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new DouYinListener());
 
         new SpinPenKeywordsRewardManager().init(GlobalEventChannel.INSTANCE);
 
