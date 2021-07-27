@@ -24,6 +24,10 @@ public class SpinPenKeywordsListener extends BaseGroupMessageListener {
         getRegexString();
     }
 
+    public SpinPenKeywordsListener() {
+        super("");
+    }
+
     @Override
     protected void consume(GroupMessageEvent event) {
         String msg = textMessage.replaceAll(" ", "")

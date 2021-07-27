@@ -11,6 +11,10 @@ import wang.ismy.service.MessageQueue;
  * @date 2021/6/8 22:40
  */
 public class AllGroupMessageListener extends BaseGroupMessageListener {
+    public AllGroupMessageListener() {
+        super("");
+    }
+
     @Override
     protected void consume(GroupMessageEvent event) {
         MessageBO messageBO = new MessageBO();

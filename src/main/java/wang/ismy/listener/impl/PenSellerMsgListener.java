@@ -20,6 +20,10 @@ public class PenSellerMsgListener extends BaseGroupMessageListener {
 
     private static final Pattern PATTERN =Pattern.compile("包邮|出|低价|材料|清笔");
 
+    public PenSellerMsgListener() {
+        super("");
+    }
+
     @Override
     protected void consume(GroupMessageEvent event) {
         boolean currentContainsImg = event.getMessage()

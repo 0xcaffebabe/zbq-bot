@@ -1,26 +1,23 @@
 package wang.ismy.listener;
 
+import com.google.common.util.concurrent.RateLimiter;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.function.Consumer;
+import java.util.concurrent.TimeUnit;
 
-/**
- * @author MY
- * @date 2021/5/26 21:35
- */
-public abstract class BaseGroupMessageListener implements Consumer<GroupMessageEvent> {
+public abstract class RateLimitedMessageListener extends BaseGroupMessageListener{
 
-    protected String textMessage;
-    protected boolean isAtMe;
-    protected String keyword;
+    private final RateLimiter rateLimiter = RateLimiter.create(0.05);
 
-    public BaseGroupMessageListener(String keyword) {
-        this.keyword = keyword;
+    private String name;
+
+    public RateLimitedMessageListener(String name, String keyword) {
+        super(keyword);
+        this.name = name;
     }
 
     @Override
@@ -39,12 +36,10 @@ public abstract class BaseGroupMessageListener implements Consumer<GroupMessageE
                 .getMessage()
                 .stream()
                 .anyMatch(msg -> msg instanceof At && Bot.getInstanceOrNull(((At)msg).getTarget()) != null);
+        if (!rateLimiter.tryAcquire(100, TimeUnit.MILLISECONDS)) {
+            event.getSender().sendMessage(name + "已限流 请稍后再试");
+            return;
+        }
         consume(event);
     }
-
-    /**
-     * 接收到消息后，该方法会被调用
-     * @param event 事件对象
-     */
-    protected abstract void consume(GroupMessageEvent event);
 }
