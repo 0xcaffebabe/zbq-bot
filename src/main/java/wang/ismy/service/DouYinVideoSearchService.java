@@ -21,6 +21,8 @@ public class DouYinVideoSearchService {
 
     private final WebClient webClient = new WebClient(BrowserVersion.CHROME);
 
+    private static final DouYinVideoSearchService INSTANCE = new DouYinVideoSearchService();
+
     {
         webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);//当HTTP的状态非200时是否抛出异常, 这里选择不需要
@@ -55,6 +57,10 @@ public class DouYinVideoSearchService {
             douYinVideoList.add(douYinVideoItem);
         }
         return douYinVideoList;
+    }
+
+    public static DouYinVideoSearchService getInstance(){
+        return INSTANCE;
     }
 
     public static void main(String[] args) throws IOException {

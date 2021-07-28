@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DouYinListener extends RateLimitedMessageListener {
-    private static final DouYinVideoSearchService DOU_YIN_VIDEO_SEARCH_SERVICE = new DouYinVideoSearchService();
+    private static final DouYinVideoSearchService DOU_YIN_VIDEO_SEARCH_SERVICE = DouYinVideoSearchService.getInstance();
 
     public DouYinListener() {
         super("刷抖音", "刷抖音");
