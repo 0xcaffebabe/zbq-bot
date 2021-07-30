@@ -19,7 +19,7 @@ public class RandomEmoticonsListener extends BaseGroupMessageListener {
     @Override
     protected void consume(GroupMessageEvent event) {
         if (StringUtils.isNotBlank(textMessage) && textMessage.length() <= 5){
-            if (RandomUtil.randomInt(0,7) == 4) {
+            if (RandomUtil.randomInt(0,3) == 1) {
                 try {
                     event.getSubject().sendMessage(event.getSubject().uploadImage(ExternalResource.create(EMOTICONS_SERVICE.selectRandomOne(textMessage))));
                 } catch (IOException e) {
