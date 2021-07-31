@@ -21,7 +21,12 @@ public class RandomEmoticonsListener extends BaseGroupMessageListener {
         if (StringUtils.isNotBlank(textMessage) && textMessage.length() <= 5){
             if (RandomUtil.randomInt(0,3) == 1) {
                 try {
-                    event.getSubject().sendMessage(event.getSubject().uploadImage(ExternalResource.create(EMOTICONS_SERVICE.selectRandomOne(textMessage))));
+                    byte[] bytes = EMOTICONS_SERVICE.selectRandomOne(textMessage);
+                    if (bytes.length == 0) {
+                        System.out.println(textMessage + "没有对应的表情包");
+                        return;
+                    }
+                    event.getSubject().sendMessage(event.getSubject().uploadImage(ExternalResource.create(bytes)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
