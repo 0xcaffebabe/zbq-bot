@@ -13,17 +13,11 @@ import java.io.InputStream;
  */
 public class RobotHelpListener extends BaseGroupMessageListener {
     public RobotHelpListener() {
-        super("机器人");
+        super("");
     }
 
     @Override
     protected void consume(GroupMessageEvent event) {
-            event.getSubject().sendMessage("回归中...");
-            InputStream is = this.getClass().getClassLoader().getResourceAsStream("pick.gif");
-            if (is != null) {
-                byte[] bytes = IoUtil.readBytes(is);
-                event.getSubject().sendMessage(event.getSubject().uploadImage(ExternalResource.create(bytes)));
-            }
         if (isAtMe) {
             event.getSubject().sendMessage("转笔机器人功能：\n" +
                     "视频搜索：发送视频搜索加关键词搜索转笔视频。\n" +
