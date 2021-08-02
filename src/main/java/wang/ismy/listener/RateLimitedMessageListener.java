@@ -7,11 +7,13 @@ import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public abstract class RateLimitedMessageListener extends BaseGroupMessageListener{
+public abstract class RateLimitedMessageListener extends BaseGroupMessageListener {
 
-    private final RateLimiter rateLimiter = RateLimiter.create(0.05);
+    private static final Map<Long, RateLimiter> limiterMap = new ConcurrentHashMap<>();
 
     private String name;
 
@@ -35,9 +37,11 @@ public abstract class RateLimitedMessageListener extends BaseGroupMessageListene
         isAtMe = event
                 .getMessage()
                 .stream()
-                .anyMatch(msg -> msg instanceof At && Bot.getInstanceOrNull(((At)msg).getTarget()) != null);
+                .anyMatch(msg -> msg instanceof At && Bot.getInstanceOrNull(((At) msg).getTarget()) != null);
+        long groupId = event.getSubject().getId();
+        RateLimiter rateLimiter = limiterMap.computeIfAbsent(groupId, key -> RateLimiter.create(0.02));
         if (!rateLimiter.tryAcquire(100, TimeUnit.MILLISECONDS)) {
-            event.getSender().sendMessage(name + "已限流 请稍后再试");
+            event.getSender().sendMessage(name + "在群 " + groupId + " 已限流 请稍后再试");
             return;
         }
         consume(event);
