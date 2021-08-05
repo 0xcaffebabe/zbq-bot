@@ -27,11 +27,9 @@ public class SongOrderMessageListener extends RateLimitedMessageListener {
     @Override
     protected void consume(GroupMessageEvent event) {
         String songName = textMessage.replaceAll("点歌", "");
-        event.getSubject().sendMessage("转码中 请稍后");
         try {
             Voice voice = event.getSubject().uploadVoice(ExternalResource.create(MUSIC_SERVICE.search(songName)));
             event.getSubject().sendMessage(voice);
-            ImgSendUtils.send("call.gif", event.getSubject());
         } catch (Exception e) {
             event.getSubject().sendMessage("点歌失败：" + e.getMessage());
         }
