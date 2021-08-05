@@ -21,7 +21,7 @@ public class RandomTalkListener extends BaseGroupMessageListener {
     @Override
     protected void consume(GroupMessageEvent event) {
         if (StringUtils.isNotEmpty(textMessage)) {
-            if (RandomUtils.nextInt(0, 7) == 1) {
+            if (RandomUtils.nextInt(0, 5) == 1) {
                 String msg = TALK_SERVICE.talk(textMessage);
                 if (StringUtils.isNotEmpty(msg)) {
                     event.getSubject().sendMessage(msg);
