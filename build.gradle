@@ -28,6 +28,7 @@ dependencies {
     implementation group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.51.0'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.1'
     implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
+    implementation group: 'org.springframework', name: 'spring-web', version: '5.3.9'
 
 
 
