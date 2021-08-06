@@ -25,8 +25,9 @@ public class RandomTalkListener extends BaseGroupMessageListener {
                 String msg = TALK_SERVICE.talk(textMessage);
                 if (StringUtils.isNotEmpty(msg)) {
                     event.getSubject().sendMessage(msg);
+                }else {
+                    System.out.println(textMessage + "无言以对");
                 }
-                System.out.println(textMessage + "无言以对");
             }
         }
     }

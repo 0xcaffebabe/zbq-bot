@@ -1,5 +1,6 @@
 package wang.ismy.listener.impl;
 
+import cn.hutool.core.collection.ListUtil;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import wang.ismy.dto.DouYinVideoItem;
@@ -7,6 +8,7 @@ import wang.ismy.listener.RateLimitedMessageListener;
 import wang.ismy.service.DouYinVideoSearchService;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,9 @@ public class DouYinListener extends RateLimitedMessageListener {
     protected void consume(GroupMessageEvent event) {
         event.getSubject().sendMessage("正在获取相关转笔短视频");
         try {
-            List<DouYinVideoItem> videoList = DOU_YIN_VIDEO_SEARCH_SERVICE.searchVideo()
+            List<DouYinVideoItem> videoList = DOU_YIN_VIDEO_SEARCH_SERVICE.searchVideo();
+            Collections.shuffle(videoList);
+            videoList = videoList
                     .stream()
                     .limit(3)
                     .collect(Collectors.toList());
