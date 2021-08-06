@@ -1,6 +1,9 @@
 package wang.ismy.listener.impl;
 
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.MessageChainBuilder;
+import net.mamoe.mirai.message.data.QuoteReply;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import wang.ismy.listener.BaseGroupMessageListener;
@@ -21,7 +24,7 @@ public class RandomTalkListener extends BaseGroupMessageListener {
     @Override
     protected void consume(GroupMessageEvent event) {
         if (StringUtils.isNotEmpty(textMessage)) {
-            if (RandomUtils.nextInt(0, 7) == 1) {
+            if (RandomUtils.nextInt(0, 5) == 1) {
                 String msg = TALK_SERVICE.talk(textMessage);
                 if (StringUtils.isNotEmpty(msg)) {
                     event.getSubject().sendMessage(msg);
