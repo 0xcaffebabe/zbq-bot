@@ -29,10 +29,10 @@ public class RandomTalkListener extends BaseGroupMessageListener {
     protected void consume(GroupMessageEvent event) {
         if (StringUtils.isNotEmpty(textMessage)) {
             int hour = LocalDateTime.now().getHour() + 1;
-            // 白天闲聊阈值 10%
+            // 白天闲聊阈值 5%
             boolean talk = false;
             if (hour >=8 && hour <= 23) {
-                talk = RandomUtils.nextInt(0, 10) == 1;
+                talk = RandomUtils.nextInt(0, 20) == 1;
             }else {
                 // 夜晚 50%
                 talk = RandomUtils.nextBoolean();
