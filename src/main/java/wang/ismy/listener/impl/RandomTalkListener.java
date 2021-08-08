@@ -1,5 +1,7 @@
 package wang.ismy.listener.impl;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
@@ -8,6 +10,8 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import wang.ismy.listener.BaseGroupMessageListener;
 import wang.ismy.service.TalkService;
+
+import java.time.LocalDateTime;
 
 /**
  * @Title: RandomTalkListener
@@ -24,7 +28,17 @@ public class RandomTalkListener extends BaseGroupMessageListener {
     @Override
     protected void consume(GroupMessageEvent event) {
         if (StringUtils.isNotEmpty(textMessage)) {
-            if (RandomUtils.nextInt(0, 5) == 1) {
+            int hour = LocalDateTime.now().getHour() + 1;
+            // 白天闲聊阈值 10%
+            boolean talk = false;
+            if (hour >=8 && hour <= 23) {
+                talk = RandomUtils.nextInt(0, 10) == 1;
+            }else {
+                // 夜晚 50%
+                talk = RandomUtils.nextBoolean();
+            }
+
+            if (talk) {
                 String msg = TALK_SERVICE.talk(textMessage);
                 if (StringUtils.isNotEmpty(msg)) {
                     event.getSubject().sendMessage(msg);
