@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
@@ -43,7 +44,10 @@ public class ImgOcrService {
         return array.stream()
                 .map(JSONArray.class::cast)
                 .map(arr -> arr.getString(1))
-                .collect(Collectors.joining("|"));
+                .filter(StringUtils::hasLength)
+                .map(str -> str.substring(2))
+                .filter(StringUtils::hasLength)
+                .collect(Collectors.joining());
     }
 
     public static ImgOcrService getInstance() {

@@ -94,7 +94,7 @@ public abstract class BaseGroupMessageListener implements Consumer<GroupMessageE
                         OCR_CACHE.put(bytes, content);
                         return content;
                     })
-                    .collect(Collectors.joining("@@"));
+                    .collect(Collectors.joining());
         }catch (Exception e){
             e.printStackTrace();
         }
