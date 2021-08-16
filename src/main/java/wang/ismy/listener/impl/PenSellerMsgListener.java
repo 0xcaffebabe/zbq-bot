@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class PenSellerMsgListener extends BaseGroupMessageListener {
 
-    private static final Pattern PATTERN =Pattern.compile("包邮|出|低价|材料|清笔");
+    private static final Pattern PATTERN =Pattern.compile("包邮|低价|材料|清笔|价格|问价|私聊|便宜");
 
     public PenSellerMsgListener() {
         super("");
