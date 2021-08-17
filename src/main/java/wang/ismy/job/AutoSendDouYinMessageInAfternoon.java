@@ -1,20 +1,26 @@
 package wang.ismy.job;
 
 import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
+import net.mamoe.mirai.utils.ExternalResource;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import wang.ismy.dto.DouYinVideoItem;
 import wang.ismy.service.DouYinVideoSearchService;
+import wang.ismy.service.EmoticonsService;
+import wang.ismy.service.VideoSearchService;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AutoSendDouYinMessageInAfternoon implements Job {
     private static final DouYinVideoSearchService DOU_YIN_VIDEO_SEARCH_SERVICE = DouYinVideoSearchService.getInstance();
+    public static final EmoticonsService EMOTICONS_SERVICE = EmoticonsService.getInstance();
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         List<DouYinVideoItem> videoList = null;
@@ -37,7 +43,12 @@ public class AutoSendDouYinMessageInAfternoon implements Job {
                     for (DouYinVideoItem video : collect) {
                         builder.append(video.getTitle() + ":" + video.getLink() + "\n");
                     }
-                    group.sendMessage("下午好 三点钟了 饮茶先啦");
+                    try {
+                        Image image = group.uploadImage(ExternalResource.create(EMOTICONS_SERVICE.selectRandomOne("饮茶")));
+                        group.sendMessage(image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     group.sendMessage(builder.build());
                 });
     }
