@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.quartz.SchedulerException;
 import wang.ismy.job.AutoSendDouYinMessageInAfternoon;
 import wang.ismy.job.AutoSendDouYinMessageInMorning;
+import wang.ismy.job.RobotHelpJob;
 import wang.ismy.job.TestJob;
 import wang.ismy.listener.impl.*;
 import wang.ismy.service.*;
@@ -75,8 +76,8 @@ public final class Plugin extends JavaPlugin {
         // 定时任务
         try {
             SCHEDULE_SERVICE.submit(AutoSendDouYinMessageInMorning.class, "0 0 7 ? * *");
-//            SCHEDULE_SERVICE.submit(TestJob.class, "1 * * ? * *");
             SCHEDULE_SERVICE.submit(AutoSendDouYinMessageInAfternoon.class, "0 0 15 ? * *");
+            SCHEDULE_SERVICE.submit(RobotHelpJob.class, "0 0 12,18,22 * * ? ");
         } catch (SchedulerException e) {
             e.printStackTrace();
         }

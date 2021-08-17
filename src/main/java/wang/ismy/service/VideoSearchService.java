@@ -108,4 +108,8 @@ public class VideoSearchService {
         }
         return Collections.emptyList();
     }
+
+    public static VideoSearchService getInstance() {
+        return INSTANCE;
+    }
 }
