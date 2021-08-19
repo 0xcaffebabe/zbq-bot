@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class PenSellerMsgListener extends BaseGroupMessageListener {
 
-    private static final Pattern PATTERN =Pattern.compile("包邮|低价|材料|清笔|价格|问价|私聊|便宜");
+    private static final Pattern PATTERN =Pattern.compile("包邮|低价|材料|清笔|价格|问价|私聊|便宜|出");
 
     public PenSellerMsgListener() {
         super("");
@@ -35,7 +35,8 @@ public class PenSellerMsgListener extends BaseGroupMessageListener {
                 .getMessageSequence(groupId, qq)
                 .stream().anyMatch(MessageBO::isImg);
         if (PATTERN.matcher(textMessage).find() &&(currentContainsImg || recentContainsImg)) {
-            MessageSource.recall(event.getMessage());
+            event.getSubject().sendMessage("转笔探讨反诈中心提醒您：网络有风险，交易需谨慎");
+//            MessageSource.recall(event.getMessage());
         }
     }
 }
