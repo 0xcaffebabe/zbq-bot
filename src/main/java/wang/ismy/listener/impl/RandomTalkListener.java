@@ -39,7 +39,7 @@ public class RandomTalkListener extends BaseGroupMessageListener {
             }
 
             if (talk) {
-                String msg = TALK_SERVICE.talk(textMessage);
+                String msg = TALK_SERVICE.talk(textMessage).replaceAll("菲菲", "嫩叠");
                 if (StringUtils.isNotEmpty(msg)) {
                     event.getSubject().sendMessage(msg);
                 }else {
